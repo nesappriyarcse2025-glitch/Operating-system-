@@ -1,0 +1,29 @@
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sys/wait.h&gt;
+int main()
+{
+    pid_t pid;
+    pid = fork();
+    if(pid &lt; 0)
+    {
+        printf(&quot;Fork Failed\n&quot;);
+        exit(1);
+    }
+    else if(pid == 0)
+    {
+        printf(&quot;\nCHILD PROCESS&quot;);
+        printf(&quot;\nChild PID : %d&quot;, getpid());
+        printf(&quot;\nParent PID : %d\n&quot;, getppid());
+        exit(0);
+        }
+    else
+    {
+        wait(NULL);
+        printf(&quot;\nPARENT PROCESS&quot;);
+        printf(&quot;\nParent PID : %d&quot;, getpid());
+        printf(&quot;\nParent&#39;s Parent PID : %d\n&quot;, getppid());
+    }
+    return 0;
+}
