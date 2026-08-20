@@ -1,0 +1,32 @@
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;unistd.h&gt;
+#include&lt;string.h&gt;
+#include&lt;sys/wait.h&gt;
+int main()
+{
+int fd[2];
+pid_t pid;
+char message[] = &quot;Hello from Child Process&quot;;
+char buffer[100];
+pipe(fd);
+pid = fork();
+if(pid == 0)
+{
+close(fd[0]);
+write(fd[1], message, strlen(message)+1);
+close(fd[1]);
+exit(0);
+
+
+}
+else
+{
+wait(NULL);
+close(fd[1]);
+read(fd[0], buffer, sizeof(buffer));
+printf(&quot;Message received from child: %s\n&quot;, buffer);
+close(fd[0]);
+}
+return 0;
+}
